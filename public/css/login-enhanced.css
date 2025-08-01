@@ -1,0 +1,202 @@
+/* Estilos adicionales para el login personalizado de Filament 3 */
+
+/* Importar fuentes de Google */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Variables CSS para consistencia */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --shadow-primary: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-hover: 0 8px 25px rgba(102, 126, 234, 0.6);
+    --border-radius: 24px;
+    --border-radius-sm: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Mejoras adicionales para el formulario */
+.fi-simple-main .fi-form {
+    padding: 2.5rem !important;
+}
+
+/* Título del formulario */
+.fi-simple-main .fi-simple-header h1 {
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Subtítulo del formulario */
+.fi-simple-main .fi-simple-header p {
+    color: #6b7280;
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+}
+
+/* Mejoras para los iconos de los campos */
+.fi-input-wrp {
+    position: relative;
+}
+
+.fi-input-wrp::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.25rem;
+    height: 1.25rem;
+    background-size: contain;
+    background-repeat: no-repeat;
+    z-index: 10;
+    opacity: 0.5;
+    transition: var(--transition);
+}
+
+/* Icono para email */
+.fi-input[type="email"] + .fi-input-wrp::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207'/%3E%3C/svg%3E");
+}
+
+/* Icono para password */
+.fi-input[type="password"] + .fi-input-wrp::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z'/%3E%3C/svg%3E");
+}
+
+/* Efectos de partículas en el fondo */
+.fi-simple-layout::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: float 20s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Mejoras para dispositivos móviles */
+@media (max-width: 640px) {
+    .fi-simple-main {
+        margin: 1rem !important;
+        padding: 1.5rem !important;
+        border-radius: 16px !important;
+    }
+    
+    .brand-title {
+        font-size: 2rem !important;
+    }
+    
+    .brand-subtitle {
+        font-size: 1rem !important;
+    }
+}
+
+/* Animación de carga para el botón */
+.fi-btn-primary.loading {
+    position: relative;
+    color: transparent !important;
+}
+
+.fi-btn-primary.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Mejoras para el estado de error */
+.fi-fo-field-wrp.error .fi-input {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+/* Mejoras para el estado de éxito */
+.fi-fo-field-wrp.success .fi-input {
+    border-color: #10b981 !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Efectos de hover mejorados */
+.fi-fo-field-wrp:hover .fi-input {
+    border-color: #9ca3af !important;
+    transform: translateY(-1px);
+}
+
+/* Mejoras para el checkbox */
+.fi-checkbox-input {
+    border-radius: 6px !important;
+    border: 2px solid #d1d5db !important;
+    transition: var(--transition) !important;
+}
+
+.fi-checkbox-input:checked {
+    background: var(--primary-gradient) !important;
+    border-color: transparent !important;
+}
+
+/* Mejoras para los enlaces */
+.fi-link {
+    color: #667eea !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: var(--transition) !important;
+}
+
+.fi-link:hover {
+    color: #764ba2 !important;
+    text-decoration: underline !important;
+}
+
+/* Mejoras para el modo oscuro (si se implementa) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glass-bg: rgba(17, 24, 39, 0.95);
+        --glass-border: rgba(255, 255, 255, 0.1);
+    }
+    
+    .fi-simple-main {
+        background: var(--glass-bg) !important;
+        border-color: var(--glass-border) !important;
+    }
+    
+    .fi-input {
+        background: rgba(31, 41, 55, 0.8) !important;
+        border-color: #374151 !important;
+        color: #f9fafb !important;
+    }
+    
+    .fi-fo-field-wrp-label {
+        color: #f9fafb !important;
+    }
+}
