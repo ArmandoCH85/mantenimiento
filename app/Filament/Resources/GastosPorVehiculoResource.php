@@ -128,13 +128,7 @@ class GastosPorVehiculoResource extends Resource
                     ->label('Solo vehículos con gastos')
                     ->query(fn (Builder $query): Builder => $query->having('gasto_total', '>', 0)),
             ])
-            ->actions([
-                Tables\Actions\Action::make('ver_detalle')
-                    ->label('Ver Detalle')
-                    ->icon('heroicon-o-eye')
-                    ->url(fn ($record) => route('filament.admin.resources.vehicles.edit', $record->id))
-                    ->openUrlInNewTab(),
-            ])
+            ->actions([ ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     // Acciones de exportación se manejarán a nivel de página

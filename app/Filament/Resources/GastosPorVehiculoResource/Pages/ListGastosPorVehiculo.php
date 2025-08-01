@@ -19,7 +19,7 @@ class ListGastosPorVehiculo extends ListRecords
                 ->color('success')
                 ->action(function () {
                     $data = GastosPorVehiculoResource::getGastosPorVehiculoQuery()->get();
-                    
+
                     // Crear contenido Excel con formato HTML mejorado
                     $excel = '<!DOCTYPE html>
 <html>
@@ -55,12 +55,12 @@ class ListGastosPorVehiculo extends ListRecords
         <strong>🚗 Total de vehículos:</strong> ' . $data->count() . ' vehículos analizados<br>
         <strong>💰 Moneda:</strong> Soles Peruanos (PEN)
     </div>';
-    
+
                     // Calcular estadísticas
                     $totalGeneral = $data->sum('gasto_total');
                     $promedioGeneral = $data->avg('gasto_total');
                     $vehiculoMasCaro = $data->sortByDesc('gasto_total')->first();
-                    
+
                     $excel .= '
     <div class="stats">
         <div class="stat-box">
@@ -93,7 +93,7 @@ class ListGastosPorVehiculo extends ListRecords
             </tr>
         </thead>
         <tbody>';
-                    
+
                     foreach ($data as $record) {
                         // Formatear la fecha si existe
                         $ultimoMantenimiento = 'N/A';
@@ -104,7 +104,7 @@ class ListGastosPorVehiculo extends ListRecords
                                 $ultimoMantenimiento = $record->ultimo_mantenimiento;
                             }
                         }
-                        
+
                         // Determinar color según el gasto
                         $gastoColor = '#059669';
                         if ($record->gasto_total > $promedioGeneral * 1.5) {
@@ -112,7 +112,7 @@ class ListGastosPorVehiculo extends ListRecords
                         } elseif ($record->gasto_total > $promedioGeneral) {
                             $gastoColor = '#d97706';
                         }
-                        
+
                         $excel .= '<tr>
                             <td><strong style="color: #1f2937;">' . ($record->placa ?? '') . '</strong></td>
                             <td>' . ($record->marca ?? '') . '</td>
@@ -125,7 +125,7 @@ class ListGastosPorVehiculo extends ListRecords
                             <td class="text-right km">' . number_format($record->kilometraje_actual ?? 0, 0) . ' km</td>
                         </tr>';
                     }
-                    
+
                     $excel .= '</tbody>
         <tfoot>
             <tr style="background-color: #374151; color: white; font-weight: bold;">
@@ -144,7 +144,7 @@ class ListGastosPorVehiculo extends ListRecords
     </div>
 </body>
 </html>';
-                    
+
                     return response()->streamDownload(function () use ($excel) {
                         echo $excel;
                     }, 'gastos_por_vehiculo_' . now()->format('Y-m-d_H-i-s') . '.xls', [

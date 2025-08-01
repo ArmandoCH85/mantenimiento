@@ -210,12 +210,19 @@ class ViewMaintenance extends ViewRecord
                             }
 
                             $links = [];
+                            $missingFiles = [];
+                            
                             foreach ($files as $file) {
                                 // Limpiar el nombre del archivo
                                 $fileName = trim($file);
                                 
-                                // Construir la ruta completa
-                                $filePath = 'mantenimientos/' . $fileName;
+                                // Determinar la ruta del archivo
+                                $filePath = $fileName;
+                                
+                                // Si no contiene la carpeta, agregarla
+                                if (!str_starts_with($fileName, 'mantenimientos/')) {
+                                    $filePath = 'mantenimientos/' . $fileName;
+                                }
                                 
                                 // Verificar si el archivo existe en el disco private
                                 if (Storage::disk('private')->exists($filePath)) {
@@ -224,13 +231,36 @@ class ViewMaintenance extends ViewRecord
                                         'maintenance' => $this->getRecord()->id,
                                         'file' => base64_encode($filePath)
                                     ]);
-                                    $links[] = "<a href='{$url}' target='_blank' class='text-blue-600 hover:text-blue-800 underline'>{$fileName}</a>";
+                                    $displayName = basename($fileName);
+                                    $links[] = "<a href='{$url}' target='_blank' class='text-blue-600 hover:text-blue-800 underline flex items-center gap-2'>
+                                        <svg class='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z'></path>
+                                        </svg>
+                                        {$displayName}
+                                    </a>";
                                 } else {
-                                    $links[] = "<span class='text-red-500'>{$fileName} (archivo no encontrado)</span>";
+                                    $displayName = basename($fileName);
+                                    $missingFiles[] = $displayName;
+                                    $links[] = "<span class='text-red-500 flex items-center gap-2'>
+                                        <svg class='w-4 h-4' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                            <path stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z'></path>
+                                        </svg>
+                                        {$displayName} (archivo no encontrado)
+                                    </span>";
                                 }
                             }
 
-                            return implode('<br>', $links);
+                            $result = implode('<br>', $links);
+                            
+                            // Agregar información adicional si hay archivos faltantes
+                            if (!empty($missingFiles)) {
+                                $result .= "<br><br><div class='text-sm text-gray-600 bg-yellow-50 p-3 rounded-lg border border-yellow-200'>
+                                    <strong>⚠️ Información:</strong> " . count($missingFiles) . " archivo(s) registrado(s) en la base de datos no se encontraron en el almacenamiento. 
+                                    Esto puede deberse a que los archivos fueron eliminados o movidos después de ser subidos.
+                                </div>";
+                            }
+
+                            return $result;
                         })
                         ->html()
                         ->columnSpanFull(),
