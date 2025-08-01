@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\Maintenance;
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/admin');
 });
 
 Route::get('/maintenance/{maintenance}/download-attachment/{file}', function (Maintenance $maintenance, string $file) {
